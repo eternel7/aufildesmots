@@ -19,6 +19,7 @@ const muiTheme = getMuiTheme({
     textColor: darkBlack,
     alternateTextColor: white,
     canvasColor: white,
+    iconColor: white,
     borderColor: grey300,
     disabledColor: grey500,
     pickerHeaderColor: indigo500,

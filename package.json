@@ -14,6 +14,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "jsonp": "^0.2.1",
     "material-ui": "^0.20.0"
   }
 }

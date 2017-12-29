@@ -3,44 +3,21 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import NavigationPanel from './navigationPanel';
-import {white} from 'material-ui/styles/colors';
+import ExpandableSearch from './components/expandableSearch';
+import buttonTextStyle from './const/buttonStyle';
+import muiTheme from './theme';
 
-const buttonTextStyle = {
-  color: white,
-  fontWeight: 400
-};
 
-class NavMenu extends Component{
+class NavMenu extends Component {
   static muiName = 'IconMenu';
-  render() {
-    return (
-      <IconButton onClick={this.props.myClick}><MenuIcon style={buttonTextStyle} color={white} /></IconButton>
-    );
-  }
-}
-
-/**
- * When not log login button is available
- */
-class LoginRegister extends Component {
-  static muiName = 'FlatButton';
 
   render() {
     return (
-      <div>
-        <FlatButton label="Login"
-                    labelStyle={buttonTextStyle}
-                    onClick={this.props.myClick}
-        />
-        <FlatButton label="Register"
-                    labelStyle={buttonTextStyle}
-                    onClick={this.props.myClick}
-        />
-      </div>
+      <IconButton onClick={this.props.myClick}><MenuIcon style={buttonTextStyle}
+                                                         color={muiTheme.palette.iconColor}/></IconButton>
     );
   }
 }
@@ -49,14 +26,40 @@ class LoginRegister extends Component {
  * When log-in vertical dots menu available
  * for disconnection and profile management
  */
-class Logged extends Component {
+class DotsNotLogged extends Component {
   static muiName = 'IconMenu';
 
   render() {
     return (
       <IconMenu
         iconButtonElement={
-          <IconButton><MoreVertIcon style={buttonTextStyle} color={white} /></IconButton>
+          <IconButton><MoreVertIcon style={buttonTextStyle} color={muiTheme.palette.iconColor}/></IconButton>
+        }
+        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+      >
+        <MenuItem primaryText="Refresh"/>
+        <MenuItem primaryText="Sign in"
+                  onClick={this.props.signIn}/>
+        <MenuItem primaryText="Sign up"
+                  onClick={this.props.signUp}/>
+      </IconMenu>
+    );
+  }
+}
+
+/**
+ * When log-in vertical dots menu available
+ * for disconnection and profile management
+ */
+class DotsLogged extends Component {
+  static muiName = 'IconMenu';
+
+  render() {
+    return (
+      <IconMenu
+        iconButtonElement={
+          <IconButton><MoreVertIcon style={buttonTextStyle} color={muiTheme.palette.iconColor}/></IconButton>
         }
         targetOrigin={{horizontal: 'right', vertical: 'top'}}
         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -64,7 +67,7 @@ class Logged extends Component {
         <MenuItem primaryText="Refresh"/>
         <MenuItem primaryText="Profile"/>
         <MenuItem primaryText="Sign out"
-                  onClick={this.props.myClick}/>
+                  onClick={this.props.signOut}/>
       </IconMenu>
     );
   }
@@ -76,31 +79,54 @@ class Logged extends Component {
  * and search and login on right.
  */
 class AppBarMots extends Component {
-  state = {
-    logged: false,
-    displayNavPanel: false,
-  };
 
-  toggleNavigationPanel = (event) => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayNavPanel: false,
+    };
+    // This binding is necessary to make `this` work in the callback
+    this.toggleNavigationPanel = this.toggleNavigationPanel.bind(this);
+    this.askForSignIn = this.askForSignIn.bind(this);
+    this.askForSignUp = this.askForSignUp.bind(this);
+    this.askForSignOut = this.askForSignOut.bind(this);
+  }
+
+
+  toggleNavigationPanel = (e) => {
     this.setState({displayNavPanel: !this.state.displayNavPanel});
   };
 
-  handleChange = (event) => {
-    this.setState({logged: !this.state.logged});
+  askForSignIn = (e) =>{
+    console.log("askForSignIn");
+    this.props.askForSignIn(e);
+  };
+
+  askForSignUp = (e) =>{
+    console.log("askForSignUp");
+    this.props.askForSignUp(e);
+  };
+
+  askForSignOut = (e) => {
+    console.log("askForSignOut");
+    this.props.signOut(e);
+    this.setState({logged: false});
   };
 
   render() {
     return (
       <div>
-        <NavigationPanel showMe={this.state.displayNavPanel} handleDisplay={this.toggleNavigationPanel} />
+        <NavigationPanel showMe={this.state.displayNavPanel} handleDisplay={this.toggleNavigationPanel}/>
         <AppBar
           title="Au fil des mots"
           style={{textAlign: "center"}}
-          iconStyleLeft={{width: "30%", textAlign: "left"}}
-          iconStyleRight={{width: "30%", textAlign: "right"}}
-          iconElementLeft={<NavMenu myClick={this.toggleNavigationPanel} />}
-          iconElementRight={this.state.logged ? <Logged myClick={this.handleChange}/> :
-          <LoginRegister myClick={this.handleChange}/>}
+          iconStyleLeft={{width: "40%", textAlign: "left"}}
+          iconStyleRight={{width: "40%", textAlign: "right"}}
+          iconElementLeft={<NavMenu myClick={this.toggleNavigationPanel}/>}
+          iconElementRight={
+            (this.props.logged) ?
+              <div><ExpandableSearch/> <DotsLogged signOut={this.askForSignOut}/></div> :
+              <div><ExpandableSearch/> <DotsNotLogged signIn={this.askForSignIn} signUp={this.askForSignUp}/></div>}
         />
       </div>
     );
