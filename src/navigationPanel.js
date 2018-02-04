@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 import Drawer from 'material-ui/Drawer';
 import Avatar from 'material-ui/Avatar';
 import AccountCircleIcon from 'material-ui/svg-icons/action/account-circle';
@@ -6,9 +7,24 @@ import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import {white} from 'material-ui/styles/colors';
 import MenuItem from 'material-ui/MenuItem';
 
-export default class NavigationPanel extends React.Component {
 
-  handleClose = () => this.props.handleDisplay(false);
+class NavigationPanel extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClose = this.handleClose.bind(this);
+    this.handleRequest = this.handleRequest.bind(this);
+  }
+
+  handleClose = (e, path) => {
+    console.log(path, this.props, '/'+path);
+    if(path!==undefined){
+      this.props.history.push('/'+path);
+    }
+    this.props.handleDisplay(false);
+  };
 
   handleRequest = (open) => {
     this.props.handleDisplay(open);
@@ -32,13 +48,16 @@ export default class NavigationPanel extends React.Component {
               display: "block",
               paddingTop: "12px",
               lineHeight: "24px",
-            }}><span>Arnold Schwarzenegger</span> <ExpandMoreIcon color={white} style={{verticalAlign: "bottom"}}/></div>
+            }}><span>Arnold Schwarzenegger</span> <ExpandMoreIcon color={white} style={{verticalAlign: "bottom"}}/>
+            </div>
           </div>
-          <MenuItem onClick={this.handleClose}>Play</MenuItem>
-          <MenuItem onClick={this.handleClose}>Submit</MenuItem>
-          <MenuItem onClick={this.handleClose}>About</MenuItem>
+          <MenuItem onClick={(e) => this.handleClose(e,'home')}>Home</MenuItem>
+          <MenuItem onClick={(e) => this.handleClose(e,'play')}>Play</MenuItem>
+          <MenuItem onClick={(e) => this.handleClose(e,'submit')}>Submit new words</MenuItem>
+          <MenuItem onClick={(e) => this.handleClose(e,'about')}>About</MenuItem>
         </Drawer>
       </div>
     );
   }
 }
+export default withRouter(NavigationPanel);

@@ -15,6 +15,9 @@
   },
   "devDependencies": {
     "jsonp": "^0.2.1",
-    "material-ui": "^0.20.0"
+    "material-ui": "^0.20.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2"
   }
 }

@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import NavigationPanel from './navigationPanel';
 import ExpandableSearch from './components/expandableSearch';
 import buttonTextStyle from './const/buttonStyle';
 import muiTheme from './theme';
+import {DotsLogged, DotsNotLogged} from './components/loginRegister';
+import {withRouter} from "react-router-dom";
 
 
 class NavMenu extends Component {
@@ -18,57 +17,6 @@ class NavMenu extends Component {
     return (
       <IconButton onClick={this.props.myClick}><MenuIcon style={buttonTextStyle}
                                                          color={muiTheme.palette.iconColor}/></IconButton>
-    );
-  }
-}
-
-/**
- * When log-in vertical dots menu available
- * for disconnection and profile management
- */
-class DotsNotLogged extends Component {
-  static muiName = 'IconMenu';
-
-  render() {
-    return (
-      <IconMenu
-        iconButtonElement={
-          <IconButton><MoreVertIcon style={buttonTextStyle} color={muiTheme.palette.iconColor}/></IconButton>
-        }
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <MenuItem primaryText="Refresh"/>
-        <MenuItem primaryText="Sign in"
-                  onClick={this.props.signIn}/>
-        <MenuItem primaryText="Sign up"
-                  onClick={this.props.signUp}/>
-      </IconMenu>
-    );
-  }
-}
-
-/**
- * When log-in vertical dots menu available
- * for disconnection and profile management
- */
-class DotsLogged extends Component {
-  static muiName = 'IconMenu';
-
-  render() {
-    return (
-      <IconMenu
-        iconButtonElement={
-          <IconButton><MoreVertIcon style={buttonTextStyle} color={muiTheme.palette.iconColor}/></IconButton>
-        }
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <MenuItem primaryText="Refresh"/>
-        <MenuItem primaryText="Profile"/>
-        <MenuItem primaryText="Sign out"
-                  onClick={this.props.signOut}/>
-      </IconMenu>
     );
   }
 }
@@ -99,12 +47,12 @@ class AppBarMots extends Component {
 
   askForSignIn = (e) =>{
     console.log("askForSignIn");
-    this.props.askForSignIn(e);
+    this.props.history.push('/login');
   };
 
   askForSignUp = (e) =>{
     console.log("askForSignUp");
-    this.props.askForSignUp(e);
+    this.props.history.push('/register');
   };
 
   askForSignOut = (e) => {
@@ -133,4 +81,4 @@ class AppBarMots extends Component {
   }
 }
 
-export default AppBarMots;
+export default withRouter(AppBarMots);
