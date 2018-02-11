@@ -9,8 +9,6 @@ import JSONP from 'jsonp';
 
 const googleAutoSuggestURL = `//suggestqueries.google.com/complete/search?client=youtube&hl=fr&q=`;
 
-const iconStyle = {};//{verticalAlign: "middle"};
-
 class ExpandableSearch extends Component {
   static muiName = 'IconButton';
 
@@ -80,26 +78,37 @@ class ExpandableSearch extends Component {
   };
 
   render() {
+    let styles = {
+      textFieldStyle: {
+        color: muiTheme.palette.alternateTextColor
+      },
+      underlineStyle: {
+        borderColor: muiTheme.palette.accent3Color
+      },
+      underlineFocusStyle:{
+        borderColor: muiTheme.palette.alternateTextColor,
+        borderBottomWidth: '1px'
+      }
+    };
+
     const searchInactive = (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <IconButton style={iconStyle} onClick={this.toggleSearchActive}>
+        <IconButton onClick={this.toggleSearchActive}>
           <SearchIcon color={muiTheme.palette.iconColor}/>
         </IconButton>
       </MuiThemeProvider>
     );
-    var styles = {
-      textFieldStyle: {
-        color: 'rgb(255,255, 255)'
-      }
-    };
+
     const searchActive = (
       <MuiThemeProvider muiTheme={muiTheme}>
         <span>
-          <IconButton style={iconStyle} onClick={this.toggleSearchActive}>
+          <IconButton onClick={this.toggleSearchActive}>
             <SearchIcon color={muiTheme.palette.iconColor}/>
           </IconButton>
           <AutoComplete
             inputStyle={styles.textFieldStyle}
+            underlineStyle={styles.underlineStyle}
+            underlineFocusStyle={styles.underlineFocusStyle}
             dataSource={this.state.dataSource}
             hintText="Search"
             onBlur={() => this.handleBlur()}
@@ -112,7 +121,7 @@ class ExpandableSearch extends Component {
             maxSearchResults={5}
             filter={AutoComplete.caseInsensitiveFilter}
           />
-          <IconButton style={iconStyle} onClick={this.handleCancel}>
+          <IconButton onClick={this.handleCancel}>
             <CloseIcon color={muiTheme.palette.iconColor}/>
           </IconButton>
         </span>
