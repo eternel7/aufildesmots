@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import muiTheme from "../theme";
-import buttonTextStyle from "../const/buttonStyle";
+import buttonTextStyle from "../__constants/buttonStyle";
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconButton from 'material-ui/IconButton';

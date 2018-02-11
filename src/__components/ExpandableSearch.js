@@ -87,10 +87,19 @@ class ExpandableSearch extends Component {
         </IconButton>
       </MuiThemeProvider>
     );
+    var styles = {
+      textFieldStyle: {
+        color: 'rgb(255,255, 255)'
+      }
+    };
     const searchActive = (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div>
+        <span>
+          <IconButton style={iconStyle} onClick={this.toggleSearchActive}>
+            <SearchIcon color={muiTheme.palette.iconColor}/>
+          </IconButton>
           <AutoComplete
+            inputStyle={styles.textFieldStyle}
             dataSource={this.state.dataSource}
             hintText="Search"
             onBlur={() => this.handleBlur()}
@@ -102,15 +111,11 @@ class ExpandableSearch extends Component {
             autoFocus
             maxSearchResults={5}
             filter={AutoComplete.caseInsensitiveFilter}
-            style={{width: "40%"}}
           />
-          <IconButton style={iconStyle} onClick={this.toggleSearchActive}>
-            <SearchIcon color={muiTheme.palette.iconColor}/>
-          </IconButton>
           <IconButton style={iconStyle} onClick={this.handleCancel}>
             <CloseIcon color={muiTheme.palette.iconColor}/>
           </IconButton>
-        </div>
+        </span>
       </MuiThemeProvider>
     );
 

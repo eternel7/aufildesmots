@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 import logo from '../logo.svg';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
-import LoginRegister from '../components/loginRegister';
+import LoginRegister from '../__components/LoginRegister';
 import '../App.css';
 
 class homePage extends Component {
