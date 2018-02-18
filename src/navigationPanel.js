@@ -7,6 +7,19 @@ import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import {white} from 'material-ui/styles/colors';
 import MenuItem from 'material-ui/MenuItem';
 
+const styles = {
+  panel :{
+    padding: "24px",
+    backgroundColor: "#616161",
+    width: "calc(100% - 48px)",
+    color: "#fff",
+  },
+  userMenu: {
+    display: "block",
+    paddingTop: "12px",
+    lineHeight: "24px",
+  }
+};
 
 class NavigationPanel extends React.Component {
 
@@ -19,9 +32,8 @@ class NavigationPanel extends React.Component {
   }
 
   handleClose = (e, path) => {
-    console.log(path, this.props, '/'+path);
-    if(path!==undefined){
-      this.props.history.push('/'+path);
+    if (path !== undefined) {
+      this.props.history.push('/' + path);
     }
     this.props.handleDisplay(false);
   };
@@ -31,33 +43,40 @@ class NavigationPanel extends React.Component {
   };
 
   render() {
+    const {user} = this.props;
     return (
       <div>
         <Drawer ref="navigationPanel"
                 open={this.props.showMe}
                 onRequestChange={this.props.handleDisplay}
                 docked={false}>
-          <div style={{
-            padding: "24px",
-            backgroundColor: "#616161",
-            width: "calc(100% - 48px)",
-            color: "#fff",
-          }}>
-            <Avatar size={56} icon={<AccountCircleIcon/>}/>
-            <div style={{
-              display: "block",
-              paddingTop: "12px",
-              lineHeight: "24px",
-            }}><span>Arnold Schwarzenegger</span> <ExpandMoreIcon color={white} style={{verticalAlign: "bottom"}}/>
+          /*user is connected */
+          {user &&
+          <div style={styles.panel}>
+            <Avatar size={56} icon={user.icon}/>
+            <div style={styles.userMenu}>
+              <span>user.prettyName</span><ExpandMoreIcon color={white} style={{verticalAlign: "bottom"}}/>
             </div>
           </div>
-          <MenuItem onClick={(e) => this.handleClose(e,'home')}>Home</MenuItem>
-          <MenuItem onClick={(e) => this.handleClose(e,'play')}>Play</MenuItem>
-          <MenuItem onClick={(e) => this.handleClose(e,'submit')}>Submit new words</MenuItem>
-          <MenuItem onClick={(e) => this.handleClose(e,'about')}>About</MenuItem>
+          }
+          /*user not connected */
+          {!user &&
+          <div style={styles.panel}>
+            <Avatar size={56} icon={<AccountCircleIcon/>}/>
+            <div style={styles.userMenu}>
+              <span>You should log in</span>
+            </div>
+          </div>}
+          <MenuItem onClick={(e) => this.handleClose(e, 'home')}>Home</MenuItem>
+          {!user && <MenuItem onClick={(e) => this.handleClose(e, 'login')}>Login</MenuItem>}
+          {!user && <MenuItem onClick={(e) => this.handleClose(e, 'register')}>Register</MenuItem>}
+          {user && <MenuItem onClick={(e) => this.handleClose(e, 'play')}>Play</MenuItem>}
+          {user && <MenuItem onClick={(e) => this.handleClose(e, 'submit')}>Submit new words</MenuItem>}
+          <MenuItem onClick={(e) => this.handleClose(e, 'about')}>About</MenuItem>
         </Drawer>
       </div>
     );
   }
 }
+
 export default withRouter(NavigationPanel);

@@ -3,10 +3,10 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import NavigationPanel from './navigationPanel';
-import ExpandableSearch from './__components/ExpandableSearch';
-import buttonTextStyle from './__constants/buttonStyle';
+import ExpandableSearch from './_components/ExpandableSearch';
+import buttonTextStyle from './_constants/buttonStyle';
 import muiTheme from './theme';
-import {DotsLogged, DotsNotLogged} from './__components/LoginRegister';
+import {DotsLogged, DotsNotLogged} from './_components/LoginRegister';
 import {withRouter} from "react-router-dom";
 
 
